@@ -75,7 +75,12 @@ if __name__ == "__main__":
     trigger_type       = run_info["trigger_type"]
     beam_analysis_type = run_info["beam_analysis_type"]
 
-    kaon_runs_list = [2284, 2288, 2292, 2293, 2295, 2297, 2299, 2300, 2301, 2304, 2320, 2323, 2324, 2338, 2342]
+    kaon_runs_list = [2288, 2292, 2293, 2295, 2297, 2299, 2300, 2301, 2304, 2320, 2323, 2324, 2338, 2342, 2285, 2286, 2289, 2290, 2303, 2340]
+
+    
+
+
+
 
     if args.run_number in kaon_runs_list:
         # Handle kaon runs differently
@@ -100,7 +105,8 @@ if __name__ == "__main__":
         run_trigger_pipeline        = bool(pipeline_requested)
 
     run_dir = os.path.join(args.output_base, str(args.run_number))
-    os.makedirs(run_dir, exist_ok=True)
+    if not os.path.exists(run_dir):
+        os.makedirs(run_dir, exist_ok=True)
 
     print(f"\n{'='*60}")
     print(f"  Run {args.run_number}  |  trigger: {trigger_type}")
@@ -138,7 +144,8 @@ if __name__ == "__main__":
     # ── Step 2: Beam analysis ─────────────────────────────────────────────────
     if run_vme_processing:
         beam_dir = os.path.join(args.output_base, str(args.run_number), "beam_data")
-        os.makedirs(beam_dir, exist_ok=True)
+        if not os.path.exists(beam_dir):
+            os.makedirs(beam_dir, exist_ok=True)
         beam_cmd = (
             [sys.executable, os.path.join(SCRIPT_DIR, "WCTE_beam_analysis.py"),
              "-r", str(args.run_number),

@@ -3414,7 +3414,6 @@ class BeamAnalysis:
             popt_D, pcov = fit_gaussian(h_D, bin_centers)
             
             h_D_t0t4, _ = np.histogram(self.df_goodT4["tof_t0t4_corr"][self.df_goodT4["is_deuteron"]==1], bins = bins_tof_t0t4)
-            popt_D_t0t4, pcov_t0t4 = fit_gaussian(h_D_t0t4, bin_centers_t0t4)
             
             try:
                 popt_D_t0t4, pcov_t0t4 = fit_gaussian(h_D_t0t4, bin_centers_t0t4)
@@ -4586,8 +4585,9 @@ class BeamAnalysis:
 
         if max(number_e_per_spill) > min_fraction:
 
-        
-            h_e, _, _ = ax.hist(number_e_per_spill/n_pot_per_trigger, bins = n_bins, label = lbl["es"], color = "blue", histtype = "step")
+
+            max_index = min(len(number_e_per_spill), len(n_pot_per_trigger))
+            h_e, _, _ = ax.hist(number_e_per_spill[:max_index]/n_pot_per_trigger[:max_index], bins = n_bins, label = lbl["es"], color = "blue", histtype = "step")
             try:
                 popt, pcov = fit_gaussian(h_e, bin_centers)
                 plt.plot(n_bins_narrow, gaussian(n_bins_narrow, *popt), '--', color = "blue", label = f"{lbl['es']}: mean {popt[1]:.2f}, std {popt[2]:.2f}")
@@ -4597,7 +4597,7 @@ class BeamAnalysis:
         
         if max(number_mu_per_spill) > min_fraction:
         
-            h_mu, _, _ = ax.hist(number_mu_per_spill/n_pot_per_trigger, bins = n_bins, label = lbl["mus"], color = "orange", histtype = "step")
+            h_mu, _, _ = ax.hist(number_mu_per_spill[:max_index]/n_pot_per_trigger[:max_index], bins = n_bins, label = lbl["mus"], color = "orange", histtype = "step")
             try:
                 popt, pcov = fit_gaussian(h_mu, bin_centers)
                 plt.plot(n_bins_narrow, gaussian(n_bins_narrow, *popt), '--', color = "orange", label = f"{lbl['mus']}: mean {popt[1]:.2f}, std {popt[2]:.2f}")
@@ -4608,7 +4608,7 @@ class BeamAnalysis:
 
         if max(number_pi_per_spill) > min_fraction:
         
-            h_pi, _, _ = ax.hist(number_pi_per_spill/n_pot_per_trigger, bins = n_bins, label = lbl["pis"], color = "green", histtype = "step")
+            h_pi, _, _ = ax.hist(number_pi_per_spill[:max_index]/n_pot_per_trigger[:max_index], bins = n_bins, label = lbl["pis"], color = "green", histtype = "step")
             try:
                 popt, pcov = fit_gaussian(h_pi, bin_centers)
                 plt.plot(n_bins_narrow, gaussian(n_bins_narrow, *popt), '--', color = "green", label = f"{lbl['pis']}: mean {popt[1]:.2f}, std {popt[2]:.2f}")
@@ -4617,7 +4617,7 @@ class BeamAnalysis:
                 popt  = [0, 0, 0]
         
         if max(number_p_per_spill) > min_fraction:
-            h_p, _, _ = ax.hist(number_p_per_spill/n_pot_per_trigger, bins = n_bins, label = lbl["ps"], color = "red", histtype = "step")
+            h_p, _, _ = ax.hist(number_p_per_spill[:max_index]/n_pot_per_trigger[:max_index], bins = n_bins, label = lbl["ps"], color = "red", histtype = "step")
             try:
                 popt, pcov = fit_gaussian(h_p, bin_centers)
                 plt.plot(n_bins_narrow, gaussian(n_bins_narrow, *popt), '--', color = "red", label = f"{lbl['ps']}: mean {popt[1]:.2f}, std {popt[2]:.2f}")
@@ -4625,7 +4625,7 @@ class BeamAnalysis:
                 popt  = [0, 0, 0]
         
         if max(number_D_per_spill) > min_fraction:
-            h_D, _, _ = ax.hist(number_D_per_spill/n_pot_per_trigger, bins = n_bins, label = "Deuterium", color = "black", histtype = "step")
+            h_D, _, _ = ax.hist(number_D_per_spill[:max_index]/n_pot_per_trigger[:max_index], bins = n_bins, label = "Deuterium", color = "black", histtype = "step")
             try:
                 popt, pcov = fit_gaussian(h_D, bin_centers)
                 plt.plot(n_bins_narrow, gaussian(n_bins_narrow, *popt), '--', color = "black", label = f"Deuterium: mean {popt[1]:.2f}, std {popt[2]:.2f}")
@@ -4634,7 +4634,7 @@ class BeamAnalysis:
         
         
         if max(number_3He_per_spill) > min_fraction:
-            h_3He, _, _ = ax.hist(number_3He_per_spill/n_pot_per_trigger, bins = n_bins, label = lbl["He3"], color = "magenta", histtype = "step")
+            h_3He, _, _ = ax.hist(number_3He_per_spill[:max_index]/n_pot_per_trigger[:max_index], bins = n_bins, label = lbl["He3"], color = "magenta", histtype = "step")
             try:
                 popt, pcov = fit_gaussian(h_3He, bin_centers)
                 plt.plot(n_bins_narrow, gaussian(n_bins_narrow, *popt), '--', color = "magenta", label = f"3He: mean {popt[1]:.2f}, std {popt[2]:.2f}")
